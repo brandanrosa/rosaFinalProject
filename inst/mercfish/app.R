@@ -1,31 +1,32 @@
+# myFeesh2 <- function(x, y) { # x = numeric, y = categorical
+#   #require(ggplot2)
 #
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
+#   df <- data.frame(x, y)
 #
-# Find out more about building applications with Shiny here:
-#
-#    https://shiny.posit.co/
-#
+#   ggplot(data = df, aes(x = y, y = x, fill = y)) +
+#     geom_boxplot()
+# }
 
 library(shiny)
+library(ggplot2)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Comparison of Chemicals Across Groups"),
 
-    # Sidebar with a slider input for number of bins 
+    # Sidebar
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+          varSelectInput("num", "Numeric",
+                      data[, c("amtMERC", "amtPCB", "amtPFA")]
+                      ),
+
+          varSelectInput("cat", "Categorical", data[, c("state", "species", "feeder")])
         ),
 
-        # Show a plot of the generated distribution
+        # Show a plot
         mainPanel(
            plotOutput("distPlot")
         )
@@ -35,17 +36,16 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+  xx <- reactive(input$num)
+  yy <- reactive(input$cat)
 
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white',
-             xlab = 'Waiting time to next eruption (in mins)',
-             main = 'Histogram of waiting times')
-    })
+    output$distPlot <- renderPlot({
+
+      ggplot(data = data, aes(x = !!input$cat, y = !!input$num, fill = !!input$cat)) +
+        geom_boxplot()
+
+      })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
