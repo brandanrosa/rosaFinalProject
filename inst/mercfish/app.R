@@ -20,11 +20,13 @@ ui <- fluidPage(
     sidebarLayout(
         sidebarPanel(
           varSelectInput("num", "Numeric",
-                      data[, c("amtMERC", "amtPCB", "amtPFA")]
-                      ),
+                      data[, c("amtMERC", "amtPCB", "amtPFA")],
+                      selected = "amtMerc"),
 
-          varSelectInput("cat", "Categorical", data[, c("state", "species", "feeder")])
-        ),
+          varSelectInput("cat", "Categorical",
+                         data[, c("state", "species", "feeder")],
+                         selected = "feeder")
+          ),
 
         # Show a plot
         mainPanel(
