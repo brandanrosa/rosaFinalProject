@@ -43,11 +43,6 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-  # xx <- reactive(input$num1)
-  # yy <- reactive(input$num1)
-  # zz <- reactive(input$cat)
-  # ylm <- reactive(lm(input$num1 ~ input$num2, data = data))
-
   output$distPlot <- renderPlot({
 
       ggplot(data = data, aes(x = !!input$num2, y = !!input$num1, colour = !!input$cat)) +
