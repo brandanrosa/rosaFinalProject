@@ -7,8 +7,8 @@
 #     geom_boxplot()
 # }
 
-library(shiny)
-library(ggplot2)
+library(shiny, warn.conflicts = FALSE)
+library(ggplot2, warn.conflicts = FALSE)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
