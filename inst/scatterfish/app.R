@@ -20,16 +20,8 @@ ui <- fluidPage(
   # Sidebar
   sidebarLayout(
     sidebarPanel(
-      varSelectInput("num1", "Response",
-                     data[, c("amtMERC", "amtPCB", "amtPFA")],
-                     selected = "amtMerc"),
-
-      varSelectInput("num2", "Explanatory",
-                     data[, c("amtMERC", "amtPCB", "amtPFA")],
-                     selected = "amtPCB"),
-
-      varSelectInput("cat", "Categorical",
-                     data[, c("state", "species", "feeder")],
+      varSelectInput("cat", "Group By?",
+                     projData[, c("state", "species", "feeder")],
                      selected = "feeder")
     ),
 
@@ -45,7 +37,7 @@ server <- function(input, output) {
 
   output$distPlot <- renderPlot({
 
-      ggplot(data = data, aes(x = !!input$num2, y = !!input$num1, colour = !!input$cat)) +
+      ggplot(data = projData, aes(x = lPCB, y = lMerc, colour = !!input$cat)) +
       geom_point()
   })
 }

@@ -21,11 +21,11 @@ ui <- fluidPage(
     sidebarLayout(
         sidebarPanel(
           varSelectInput("num", "Numeric",
-                      data[, c("amtMERC", "amtPCB", "amtPFA")],
-                      selected = "amtMerc"),
+                      projData[, c("lMerc", "lPCB")],
+                      selected = "lMerc"),
 
           varSelectInput("cat", "Categorical",
-                         data[, c("state", "species", "feeder")],
+                         projData[, c("state", "species", "feeder")],
                          selected = "feeder")
           ),
 
@@ -44,7 +44,10 @@ server <- function(input, output) {
 
     output$distPlot <- renderPlot({
 
-      ggplot(data = data, aes(x = !!input$cat, y = !!input$num, fill = !!input$cat)) +
+      ggplot(data = projData,
+             aes(x = !!input$cat,
+                 y = !!input$num,
+                 fill = !!input$cat)) +
         geom_boxplot()
 
       })
